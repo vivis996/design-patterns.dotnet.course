@@ -6,7 +6,7 @@ public class Program
 {
     public static void Main()
     {
-        IPrinciple p = new InterfaceSegregationPrinciple();
+        IPrinciple p = new DependencyInversionPrinciple();
         p.Run();
     }
 }
