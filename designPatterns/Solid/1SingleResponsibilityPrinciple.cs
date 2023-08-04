@@ -2,7 +2,12 @@
 
 namespace designPatterns.Solid;
 
-public class SingleResponsibilityPrinciple
+public interface IPrinciple
+{
+    void Run();
+}
+
+public class SingleResponsibilityPrinciple : IPrinciple
 {
     public void Run()
     {

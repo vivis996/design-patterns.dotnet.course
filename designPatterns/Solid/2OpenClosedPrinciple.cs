@@ -1,6 +1,6 @@
 namespace designPatterns.Solid;
 
-public class OpenClosedPrinciple
+public class OpenClosedPrinciple : IPrinciple
 {
     public void Run()
     {
