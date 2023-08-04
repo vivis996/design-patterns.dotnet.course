@@ -6,7 +6,7 @@ public class Program
 {
     public static void Main()
     {
-        var s = new SingleResponsibilityPrinciple();
-        s.Run();
+        var p = new OpenClosedPrinciple();
+        p.Run();
     }
 }
