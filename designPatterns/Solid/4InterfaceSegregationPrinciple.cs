@@ -98,6 +98,7 @@ public class MultiFunctionMachine : IMultiFunctionDevice
     }
 }
 
+// Interface Segregation Principle
 public class InterfaceSegregationPrinciple : IPrinciple
 {
     public void Run()

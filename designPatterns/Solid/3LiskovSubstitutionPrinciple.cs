@@ -36,6 +36,7 @@ public class Square : Rectangle
     }
 }
 
+// Liskov Substitution Principle
 public class LiskovSubstitutionPrinciple : IPrinciple
 {
     static public int Area(Rectangle r) => r.Width * r.Height;

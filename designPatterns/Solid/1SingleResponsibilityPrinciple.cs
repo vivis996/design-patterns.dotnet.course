@@ -7,6 +7,7 @@ public interface IPrinciple
     void Run();
 }
 
+// Single Responsibility Principle
 public class SingleResponsibilityPrinciple : IPrinciple
 {
     public void Run()

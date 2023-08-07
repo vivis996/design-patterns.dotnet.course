@@ -68,6 +68,7 @@ public class Research
     }
 }
 
+// Dependency Inversion Principle
 public class DependencyInversionPrinciple : IPrinciple
 {
     public void Run()
