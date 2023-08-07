@@ -73,7 +73,7 @@ public class HtmlBuilder
     }
 }
 
-public class Program
+public class Program : IRun
 {
     public void Run()
     {
