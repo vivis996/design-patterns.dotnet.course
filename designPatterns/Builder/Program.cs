@@ -55,10 +55,11 @@ public class HtmlBuilder
         this.root.Name = this.rootName;
     }
 
-    public void AddChild(string childName, string childText)
+    public HtmlBuilder AddChild(string childName, string childText)
     {
         var e = new HtmlElement(childName, childText);
         this.root.Elements.Add(e);
+        return this;
     }
 
     public override string ToString()
@@ -94,8 +95,7 @@ public class Program
         Console.WriteLine(sb);
 
         var builder = new HtmlBuilder("ul");
-        builder.AddChild("li", "hello");
-        builder.AddChild("li", "world");
+        builder.AddChild("li", "hello").AddChild("li", "world");
         Console.WriteLine(builder.ToString());
     }
 }
