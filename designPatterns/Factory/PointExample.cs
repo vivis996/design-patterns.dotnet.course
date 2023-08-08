@@ -9,30 +9,29 @@ public enum CoordinateSystem
 public class Point
 {
     private double x, y;
+    private CoordinateSystem system;
 
-    /// <summary>
-    /// Initializes a point from EITHER cartesian or polar
-    /// </summary>
-    /// <param name="a">if cartesian, rho if polar</param>
-    /// <param name="b"></param>
-    /// <param name="system"></param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
-    public Point(double a, double b,
-                 CoordinateSystem system = CoordinateSystem.Cartesian)
+    private Point(double x, double y, CoordinateSystem system)
     {
-        switch (system)
-        {
-            case CoordinateSystem.Cartesian:
-                this.x = a;
-                this.y = b;
-                break;
-            case CoordinateSystem.Polar:
-                this.x = a * Math.Cos(b);
-                this.y = a * Math.Sin(b);
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(system), system, null);
-        }
+        this.x = x;
+        this.y = y;
+        this.system = system;
+    }
+
+    // factory method
+    public static Point NewCartesianPoint(double x, double y)
+    {
+        return new Point(x, y, CoordinateSystem.Cartesian);
+    }
+
+    public static Point NewPolarPoint(double rho, double theta)
+    {
+        return new Point(rho * Math.Cos(theta), rho * Math.Sin(theta), CoordinateSystem.Polar);
+    }
+
+    public override string ToString()
+    {
+        return $"{nameof(system)}: {system}, {nameof(x)}: {x}, {nameof(y)}: {y}";
     }
 }
 
@@ -40,6 +39,7 @@ public class PointExample : IRun
 {
     public void Run()
     {
-
+        var point = Point.NewPolarPoint(1.0, Math.PI / 2);
+        Console.WriteLine(point);
     }
 }
