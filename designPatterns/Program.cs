@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Builder.FacetedBuilder.FacetedBuilder();
+        IRun p = new Factory.PointExample();
         p.Run();
     }
 }
