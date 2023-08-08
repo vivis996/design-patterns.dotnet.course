@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Builder.StepwiseBuilder();
+        IRun p = new Builder.FunctionalBuilder.FunctionalBuilder();
         p.Run();
     }
 }
