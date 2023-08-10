@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Prototype.PrototypeInheritance.PrototypeInheritance();
+        IRun p = new Prototype.ClonableBad();
         p.Run();
     }
 }

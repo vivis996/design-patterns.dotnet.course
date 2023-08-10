@@ -1,14 +1,36 @@
-﻿namespace designPatterns.Prototype;
+﻿using System.Xml.Serialization;
+using Newtonsoft.Json;
 
-public interface IPrototype<T>
+namespace designPatterns.Prototype;
+
+public static class ExtensionMethods
 {
-    T DeepCopy();
+    public static T DeepCopy<T>(this T self)
+    {
+        string jsonString = JsonConvert.SerializeObject(self);
+        return JsonConvert.DeserializeObject<T>(jsonString);
+    }
+
+    public static T DeepCopyXml<T>(this T self)
+    {
+        using (var ms = new MemoryStream())
+        {
+            var s = new XmlSerializer(typeof(T));
+            s.Serialize(ms, self);
+            ms.Position = 0;
+            return (T)s.Deserialize(ms);
+        }
+    }
 }
 
-public class Person : IPrototype<Person>
+public class Person
 {
     public string[] Names;
     public Address Address;
+
+    public Person()
+    {
+    }
 
     public Person(string[] names, Address address)
     {
@@ -26,17 +48,16 @@ public class Person : IPrototype<Person>
     {
         return $"{nameof(Names)}: {string.Join(" ", Names)}, {nameof(Address)}: {Address}";
     }
-
-    public Person DeepCopy()
-    {
-        return new Person(this.Names, this.Address.DeepCopy());
-    }
 }
 
-public class Address : IPrototype<Address>
+public class Address
 {
     public string StreetName;
     public int HouseNumber;
+
+    public Address()
+    {
+    }
 
     public Address(string streetName, int houseNumber)
     {
@@ -54,11 +75,6 @@ public class Address : IPrototype<Address>
     {
         return $"{nameof(StreetName)}: {StreetName}, {nameof(HouseNumber)}: {HouseNumber}";
     }
-
-    public Address DeepCopy()
-    {
-        return new Address(this.StreetName, this.HouseNumber);
-    }
 }
 
 public class ClonableBad : IRun
@@ -68,7 +84,7 @@ public class ClonableBad : IRun
         var john = new Person(new[] { "John", "Smith", },
             new Address("123 New York Av", 123));
 
-        var jane = john.DeepCopy();
+        var jane = john.DeepCopyXml();
         jane.Names = new[] { "Jane" };
         jane.Address.HouseNumber = 321;
 
