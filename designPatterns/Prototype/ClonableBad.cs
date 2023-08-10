@@ -1,6 +1,6 @@
 ﻿namespace designPatterns.Prototype;
 
-public class Person : ICloneable
+public class Person
 {
     public string[] Names;
     public Address Address;
@@ -11,18 +11,19 @@ public class Person : ICloneable
         this.Address = address;
     }
 
+    public Person(Person other)
+    {
+        this.Names = other.Names;
+        this.Address = new Address(other.Address);
+    }
+
     public override string ToString()
     {
         return $"{nameof(Names)}: {string.Join(" ", Names)}, {nameof(Address)}: {Address}";
     }
-
-    public object Clone()
-    {
-        return new Person(Names, Address.Clone() as Address);
-    }
 }
 
-public class Address : ICloneable
+public class Address
 {
     public string StreetName;
     public int HouseNumber;
@@ -33,14 +34,15 @@ public class Address : ICloneable
         this.HouseNumber = houseNumber;
     }
 
+    public Address(Address otherAddress)
+    {
+        this.StreetName = otherAddress.StreetName;
+        this.HouseNumber = otherAddress.HouseNumber;
+    }
+
     public override string ToString()
     {
         return $"{nameof(StreetName)}: {StreetName}, {nameof(HouseNumber)}: {HouseNumber}";
-    }
-
-    public object Clone()
-    {
-        return new Address(StreetName, HouseNumber);
     }
 }
 
@@ -51,7 +53,7 @@ public class ClonableBad : IRun
         var john = new Person(new[] { "John", "Smith", },
             new Address("123 New York Av", 123));
 
-        Person jane = john.Clone() as Person;
+        var jane = new Person(john);
         jane.Names = new[] { "Jane" };
         jane.Address.HouseNumber = 321;
 
