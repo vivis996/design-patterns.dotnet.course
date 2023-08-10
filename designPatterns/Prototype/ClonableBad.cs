@@ -1,6 +1,11 @@
 ﻿namespace designPatterns.Prototype;
 
-public class Person
+public interface IPrototype<T>
+{
+    T DeepCopy();
+}
+
+public class Person : IPrototype<Person>
 {
     public string[] Names;
     public Address Address;
@@ -21,9 +26,14 @@ public class Person
     {
         return $"{nameof(Names)}: {string.Join(" ", Names)}, {nameof(Address)}: {Address}";
     }
+
+    public Person DeepCopy()
+    {
+        return new Person(this.Names, this.Address.DeepCopy());
+    }
 }
 
-public class Address
+public class Address : IPrototype<Address>
 {
     public string StreetName;
     public int HouseNumber;
@@ -44,6 +54,11 @@ public class Address
     {
         return $"{nameof(StreetName)}: {StreetName}, {nameof(HouseNumber)}: {HouseNumber}";
     }
+
+    public Address DeepCopy()
+    {
+        return new Address(this.StreetName, this.HouseNumber);
+    }
 }
 
 public class ClonableBad : IRun
@@ -53,7 +68,7 @@ public class ClonableBad : IRun
         var john = new Person(new[] { "John", "Smith", },
             new Address("123 New York Av", 123));
 
-        var jane = new Person(john);
+        var jane = john.DeepCopy();
         jane.Names = new[] { "Jane" };
         jane.Address.HouseNumber = 321;
 
