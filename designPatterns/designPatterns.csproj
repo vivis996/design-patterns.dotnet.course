@@ -13,5 +13,11 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="morelinq" Version="3.4.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Singleton\capitals.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

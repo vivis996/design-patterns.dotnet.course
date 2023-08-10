@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Prototype.ClonableBad();
+        IRun p = new Singleton.SingletonImplementation();
         p.Run();
     }
 }
