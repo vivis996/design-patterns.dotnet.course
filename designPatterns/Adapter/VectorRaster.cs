@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections;
+using System.Collections.ObjectModel;
 using MoreLinq;
 
 namespace designPatterns.Adapter;
@@ -13,6 +14,27 @@ public class Point
         this.X = x;
         this.Y = y;
     }
+
+    protected bool Equals(Point other)
+    {
+        return this.X == other.X && this.Y == other.Y;
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return this.Equals(obj as Point);
+    }
+
+    public override int GetHashCode()
+    {
+        unchecked
+        {
+            return (this.X * 397) ^ this.Y;
+        }
+    }
 }
 
 public class Line
@@ -24,6 +46,26 @@ public class Line
         this.Start = start;
         this.End = end;
     }
+
+    protected bool Equals(Line other)
+    {
+        return Equals(this.Start, other.Start) && Equals(this.End, other.End);
+    }
+
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj)) return false;
+        if (ReferenceEquals(this, obj)) return true;
+        if (obj.GetType() != this.GetType()) return false;
+        return this.Equals(obj as Line);
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Start, End);
+    }
+
+
 }
 
 public class VectorObject : Collection<Line>
@@ -42,13 +84,20 @@ public class VectorRectangle : VectorObject
     }
 }
 
-public class LineToPointAdapter : Collection<Point>
+public class LineToPointAdapter : IEnumerable<Point>
 {
     private static int count;
 
+    private static Dictionary<int, List<Point>> cache = new();
+
     public LineToPointAdapter(Line line)
     {
+        var hash = line.GetHashCode();
+        if (cache.ContainsKey(hash)) return;
+
         Console.WriteLine($"{++count}: Generating points for line [{line.Start.X},{line.Start.Y}]-[{line.End.X},{line.End.Y}]");
+
+        var points = new List<Point>();
 
         int left = Math.Min(line.Start.X, line.End.X);
         int right = Math.Max(line.Start.X, line.End.X);
@@ -61,7 +110,7 @@ public class LineToPointAdapter : Collection<Point>
         {
             for (var y = top; y <= bottom; y++)
             {
-                Add(new Point(left, y));
+                points.Add(new Point(left, y));
             }
         }
         else
@@ -70,10 +119,22 @@ public class LineToPointAdapter : Collection<Point>
             {
                 for (var x = left; x <= right; x++)
                 {
-                    Add(new Point(x, top));
+                    points.Add(new Point(x, top));
                 }
             }
         }
+
+        cache.Add(hash, points);
+    }
+
+    public IEnumerator<Point> GetEnumerator()
+    {
+        return cache.Values.SelectMany(x => x).GetEnumerator();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
     }
 }
 
