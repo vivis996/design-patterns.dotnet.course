@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Singleton.AmbientContext();
+        IRun p = new Adapter.VectorRaster();
         p.Run();
     }
 }
