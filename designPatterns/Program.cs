@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Adapter.GenericAdapter();
+        IRun p = new Adapter.DependencyInjection();
         p.Run();
     }
 }
