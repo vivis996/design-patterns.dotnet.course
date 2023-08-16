@@ -4,7 +4,7 @@ public class Program
 {
     public static void Main()
     {
-        IRun p = new Adapter.DependencyInjection();
+        IRun p = new Bridge.Bridge();
         p.Run();
     }
 }
